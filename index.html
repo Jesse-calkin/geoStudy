@@ -1,49 +1,103 @@
-<!DOCTYPE html>
+
+<!DOCTYPE html> 
 <html>
+<head>
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Geostudy : simple tool to help study some geologic formations" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>Front Range Geologic Formations</title> 
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+  <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+  <script src="jquery.ui.touch-punch.min.js"></script>
+  <script>
 
-    <title>Geostudy</title>
-  </head>
+  $(document).bind('pageinit', function() {
+    $( "#sortable" ).sortable();
+    $( "#sortable" ).disableSelection();
+    $( "#sortable" ).bind( "sortstop", function(event, ui) {
+      $('#sortable').listview('refresh');
+    });
+  });
 
-  <body>
+  $(function() {
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/Jesse-calkin/geoStudy">View on GitHub</a>
+  $('button').click(function() {
+    $("ul.formationList").randomize("li.formation");
+  });
 
-          <h1 id="project_title">Geostudy</h1>
-          <h2 id="project_tagline">simple tool to help study some geologic formations</h2>
+});
+$(document).ready(function($) {
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/Jesse-calkin/geoStudy/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/Jesse-calkin/geoStudy/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+  var correctOrderString = $("ul.formationList").sortable('toArray') + "";
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <p>blank!</p>
-      </section>
-    </div>
+  $('#sortable').sortable({
+      update: function(event, ui) {
+        
+        var currentOrderString = $("ul.formationList").sortable('toArray') + "";
+        
+        console.log("Correct order: ", correctOrderString);
+        console.log("Current order: ", currentOrderString);
+        
+        if(correctOrderString == currentOrderString) {
+          console.log("CORRECT!");
+          alert("CORRECT!");
+        }
+    }
+  });
+});
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Geostudy maintained by <a href="https://github.com/Jesse-calkin">Jesse-calkin</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
+(function($) {
 
-    
+$.fn.randomize = function(childElem) {
+  return this.each(function() {
+      var $this = $(this);
+      var elems = $this.children(childElem);
 
-  </body>
+      elems.sort(function() { return (Math.round(Math.random())-0.5); });  
+
+      $this.remove(childElem);  
+
+      for(var i=0; i < elems.length; i++)
+        $this.append(elems[i]);      
+
+  });    
+}
+})(jQuery);
+
+  </script>
+</head>
+
+<body data-role="page"> 
+
+<div>
+  <div data-role="header" data-theme="d">
+    <h1>Drag to reorder - youngest to oldest</h1>
+  </div>
+
+  <div data-role="content" data-theme="c">
+    <button>RANDOMIZE!</button> 
+      <ul class="formationList" data-role="listview" data-inset="true" data-theme="d" id="sortable">
+        <li class="formation" id="1">Green Mountain Conglomerate</li>
+        <li class="formation" id="2">Denver/Arapahoe Formation</li>
+        <li class="formation" id="3">Laramie Formation</li>
+        <li class="formation" id="4">Fox Hills Sandstone</li>
+        <li class="formation" id="5">Pierre Shale</li>
+        <li class="formation" id="6">Niobrara Limestone</li>
+        <li class="formation" id="7">Benton Shale</li>
+        <li class="formation" id="8">SouthPlatte Sandstone</li>
+        <li class="formation" id="9">Lytle Sandstone</li>
+        <li class="formation" id="10">Morssion Formation</li>
+        <li class="formation" id="11">Ralston Creek Formation</li>
+        <li class="formation" id="12">Lykins Mudstone</li>
+        <li class="formation" id="13">Lyons Sandstone</li>
+        <li class="formation" id="14">Fountain Arkose</li>
+        <li class="formation" id="15">Idaho Springs Formation</li>
+      </ul>
+  </div>
+</div>
+</body>
 </html>
