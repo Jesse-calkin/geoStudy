@@ -1,0 +1,103 @@
+
+<!DOCTYPE html> 
+<html>
+<head>
+
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>Front Range Geologic Formations</title> 
+
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+  <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+  <script src="jquery.ui.touch-punch.min.js"></script>
+  <script>
+
+  $(document).bind('pageinit', function() {
+    $( "#sortable" ).sortable();
+    $( "#sortable" ).disableSelection();
+    $( "#sortable" ).bind( "sortstop", function(event, ui) {
+      $('#sortable').listview('refresh');
+    });
+  });
+
+  $(function() {
+
+  $('button').click(function() {
+    $("ul.formationList").randomize("li.formation");
+  });
+
+});
+$(document).ready(function($) {
+
+  var correctOrderString = $("ul.formationList").sortable('toArray') + "";
+
+  $('#sortable').sortable({
+      update: function(event, ui) {
+        
+        var currentOrderString = $("ul.formationList").sortable('toArray') + "";
+        
+        console.log("Correct order: ", correctOrderString);
+        console.log("Current order: ", currentOrderString);
+        
+        if(correctOrderString == currentOrderString) {
+          console.log("CORRECT!");
+          alert("CORRECT!");
+        }
+    }
+  });
+});
+
+(function($) {
+
+$.fn.randomize = function(childElem) {
+  return this.each(function() {
+      var $this = $(this);
+      var elems = $this.children(childElem);
+
+      elems.sort(function() { return (Math.round(Math.random())-0.5); });  
+
+      $this.remove(childElem);  
+
+      for(var i=0; i < elems.length; i++)
+        $this.append(elems[i]);      
+
+  });    
+}
+})(jQuery);
+
+  </script>
+</head>
+
+<body data-role="page"> 
+
+<div>
+  <div data-role="header" data-theme="d">
+    <h1>Drag to reorder - youngest to oldest</h1>
+  </div>
+
+  <div data-role="content" data-theme="c">
+    <button>RANDOMIZE!</button> 
+      <ul class="formationList" data-role="listview" data-inset="true" data-theme="d" id="sortable">
+        <li class="formation" data-role="collapsible" data-collapsed="true" id="1">Green Mountain Conglomerate</li>
+        <li class="formation" data-role="collapsible" data-collapsed="true" id="2">Denver/Arapahoe Formation</li>
+        <li class="formation" id="3">Laramie Formation</li>
+        <li class="formation" id="4">Fox Hills Sandstone</li>
+        <li class="formation" id="5">Pierre Shale</li>
+        <li class="formation" id="6">Niobrara Limestone</li>
+        <li class="formation" id="7">Benton Shale</li>
+        <li class="formation" id="8">SouthPlatte Sandstone</li>
+        <li class="formation" id="9">Lytle Sandstone</li>
+        <li class="formation" id="10">Morssion Formation</li>
+        <li class="formation" id="11">Ralston Creek Formation</li>
+        <li class="formation" id="12">Lykins Mudstone</li>
+        <li class="formation" id="13">Lyons Sandstone</li>
+        <li class="formation" id="14">Fountain Arkose</li>
+        <li class="formation" id="15">Idaho Springs Formation</li>
+      </ul>
+  </div>
+</div>
+</body>
+</html>
